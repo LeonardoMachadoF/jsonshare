@@ -3,6 +3,7 @@ import { useTheme } from "@/contexts/theme-context";
 import { ExternalLink, MoonStar, SunMoon } from "lucide-react"
 import Link from "next/link"
 import { Button } from "./ui/button";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
@@ -22,7 +23,15 @@ export const Navbar = () => {
                     </nav>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button>Login</Button>
+
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <Button>Login</Button>
+                        </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
                     <button onClick={() => { toggleTheme() }} >
                         {theme === 'dark' ? <MoonStar className="h-5" /> : <SunMoon className="h-6" />}
                     </button>
