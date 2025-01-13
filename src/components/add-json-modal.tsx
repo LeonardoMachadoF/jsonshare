@@ -8,17 +8,23 @@ import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
 import { useState } from "react";
 
-export const AddJsonModal = () => {
+interface AddJsonModalProps {
+    onSave: (name: string, value: string) => Promise<void>;
+}
+
+export const AddJsonModal = ({ onSave }: AddJsonModalProps) => {
     const [jsonData, setJsonData] = useState('');
     const [jsonName, setJsonName] = useState('');
+    const [openModal, setOpenModal] = useState(false);
 
-    const handleSave = () => {
-        return {
-            jsonName, jsonData
-        }
+    const handleSave = async () => {
+        await onSave(jsonName, jsonData);
+        setOpenModal(false);
+        setJsonData('');
+        setJsonName('');
     }
     return (
-        <Dialog>
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
             <DialogTrigger asChild>
                 <Button>Add JSON</Button>
             </DialogTrigger>
@@ -49,7 +55,7 @@ export const AddJsonModal = () => {
                             height="200px"
                             extensions={[json()]}
                             onChange={(value) => setJsonData(value)}
-                            className="border shadow-sm"
+                            className="border shadow-sm text-black"
                         />
                     </div>
 

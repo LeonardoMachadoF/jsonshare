@@ -1,6 +1,6 @@
 "use client"
 import { useTheme } from "@/contexts/theme-context";
-import { ExternalLink, MoonStar, SunMoon } from "lucide-react"
+import { MoonStar, SunMoon } from "lucide-react"
 import Link from "next/link"
 import { Button } from "./ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
@@ -13,7 +13,6 @@ export const Navbar = () => {
             <div className="flex justify-between items-center mx-auto max-w-4xl h-16">
                 <div className="flex gap-4">
                     <Link href="/" className="flex items-center gap-2">
-                        <ExternalLink className="h-6 w-6" />
                         <span className="font-bold">jsonshare</span>
                     </Link>
                     <nav>

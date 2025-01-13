@@ -1,7 +1,30 @@
-import { JsonDataTable } from "@/components/json-data-table";
-import { JsonEditor } from "@/components/json-editor";
+import { JsonEditor } from '@/components/json-editor';
+import prisma from '@/lib/db';
+import { currentUser } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const user = await currentUser();
+
+    if (!user) {
+        return redirect('/');
+    }
+
+    const loggedInUser = await prisma.user.findUnique({
+        where: { clerkUserId: user.id }
+    });
+
+    if (!loggedInUser) {
+        await prisma.user.create({
+            data: {
+                name: `${user.firstName} ${user.lastName}`,
+                clerkUserId: user.id,
+                imageUrl: user.imageUrl,
+                email: user.emailAddresses[0].emailAddress
+            }
+        });
+    }
+
     return (
         <div>
             <div className="my-8">
